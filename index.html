@@ -45,7 +45,7 @@
                             </div>
                             <div>
                                 <button onclick="submitButton()" type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <p class="action-left"><span id="timeoutNum">3</span> try left</p>
                             </div>
                         </div>
                     </div>
@@ -83,6 +83,12 @@
                         let typePin = document.getElementById("calcInput");
                         typePin.value = '';
                     }
+                    //Deleted last entire character or number
+                    else if (calculatorBodyNumber === 'B') {
+                        let typePin = document.getElementById("calcInput");
+                        let typedX = typePin.value.slice(0, -1);
+                        typePin.value = typedX;
+                    }
                 } else {
                     let typePin = document.getElementById("calcInput");
                     typePin.value = typePin.value + calculatorBodyNumber;
@@ -97,15 +103,27 @@
                 } else {
                     matchingResult("none", "block");
                 }
+
+                //Set timeout and after 3 times wrong then its auto refreshed
+                let tryNum = document.getElementById('timeoutNum').innerText;
+                if (generatedPin === typedPin) {
+                    document.getElementById('timeoutNum').innerText = tryNum;
+                } else if (tryNum > 1) {
+                    document.getElementById('timeoutNum').innerText = tryNum - 1;
+                } else {
+                    alert('Please!! Refresh or Pin-Generate Again');
+                    location.reload();
+                }
             }
 
-            function matchingResult(correct, notcorrect) {
+            function matchingResult(correct, incorrect) {
                 const matching = document.getElementById("match");
                 matching.style.display = correct;
 
                 const notMatching = document.getElementById("notMatch");
-                notMatching.style.display = notcorrect;
+                notMatching.style.display = incorrect;
             }
+            //Updated Successfully
         </script>
 </body>
 
